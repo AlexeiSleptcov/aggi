@@ -6,14 +6,14 @@
 #' @param manames names for your arrays. If argument is \code{NULL} (default) names will
 #' be assigned a serial number, for instance: MA1, MA2 etc.
 #' 
-#' @example mytargets <- makeTargets()
+#' @examples mytargets <- makeTargets()
 #' 
 #' @export
 
 makeTargets <- function(path = getwd(), 
                         manames = NULL){
   
-  files = list.files(filepath, "*.txt")
+  files = list.files(path, "*.txt")
   
   if(is.null(manames)){
     manames = paste("MA", 1:length(files), sep = "")
