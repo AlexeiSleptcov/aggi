@@ -12,7 +12,9 @@
 #' @return Collecting data from the format \code{"compact"} can be taken on the processed signals
 #' (\code{"processed"}), raw data (\code{"mean"} or \code{"median"}) or LogRatio (\code{"LogRatio"}).
 #' At the same time, if format selected as \code{"full"} you may collect normalized data (\code{"DyeNorm"}).
-#'
+#' @return Targets object must be class \code{data.frame}, and have two required column \code{name} 
+#' (eg.: "array1", "array2") and \code{filenames} (eg. "2802860_12158125.txt").
+#' 
 #' @examples 
 #' # targets <- read.table("targets.txt", header = TRUE, stringsAsFactors = FALSE)
 #' # MyArrays <- readAgilent(targets, collect = "median")
@@ -107,10 +109,10 @@ readAgilent <- function(targets = NULL,
            })
   } else stop("Argument macolors might be only 1 or 2", call. = FALSE)
 
-  read.data = read.maimages(files,
+  read.data = read.maimages(targets$filenames,
                             source = "agilent.median",
                             path=path,
-                            names = basename(targets$Name),
+                            names = basename(targets$names),
                             columns=columns,
                             other.columns=other.columns,
                             annotation = c("Row", "Col", "Sequence", "ControlType",
