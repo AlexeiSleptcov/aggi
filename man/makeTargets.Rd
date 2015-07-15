@@ -16,6 +16,6 @@ be assigned a serial number, for instance: MA1, MA2 etc.}
 Create targets object based on TXT files localized in filepath.
 }
 \examples{
-mytargets <- makeTargets()
+# mytargets <- makeTargets()
 }
 

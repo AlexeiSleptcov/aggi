@@ -1,4 +1,3 @@
-
 #' Plot clustering MDS for Agilent microarray data
 #' 
 #' Clustering MDS by K-Means clustering algorithm.

@@ -6,7 +6,7 @@
 #' @param manames names for your arrays. If argument is \code{NULL} (default) names will
 #' be assigned a serial number, for instance: MA1, MA2 etc.
 #' 
-#' @examples mytargets <- makeTargets()
+#' @examples # mytargets <- makeTargets()
 #' 
 #' @export
 
