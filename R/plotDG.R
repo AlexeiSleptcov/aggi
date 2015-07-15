@@ -13,7 +13,7 @@ plotDG <- function(data,
                    methodHclust = "complete"){
   
   if(inherits(data,"RGList")){
-    dannye = log10(data$R/data$G)
+    dannye = na.omit( suppressWarnings(log10(data$R/data$G)) )
   } else if(inherits(data,"MAList")) {
     dannye = data$M
   } else if(inherits(data,"EList")) {
