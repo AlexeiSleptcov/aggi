@@ -12,17 +12,17 @@ plotDG <- function(data,
                    methodDist = "euclidean",
                    methodHclust = "complete"){
   
-  if(inherits(data,"RGlist")){
+  if(inherits(data,"RGList")){
     dannye = log10(data$R/data$G)
-  } else if(inherits(data,"MAlist")) {
+  } else if(inherits(data,"MAList")) {
     dannye = data$M
-  } else if(inherits(data,"Elist")) {
+  } else if(inherits(data,"EList")) {
     dannye = data$E
   } else {
     stop("Data must RGList, MAList or EList class object")
   }
   
   if(require("limma"))
-    plot(hclust( dist( t(dannye), method = methodDist), method = methodHclust), hang=-1)
+    plot(hclust( dist( t(dannye), method = methodDist), method = methodHclust), hang=-1,  xlab = methodDist)
 }
 
