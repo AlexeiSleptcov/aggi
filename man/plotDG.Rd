@@ -4,30 +4,10 @@
 \alias{plotDG}
 \title{Plot dendrogramm for Agilent microarray data}
 \usage{
-plotDG(data, cyanine = c("R", "G"), centers = 2, methodDist = "euclidean",
-  methodHclust = "complete", print = FALSE)
-
-plotDG(data, cyanine = c("R", "G"), centers = 2, methodDist = "euclidean",
-  methodHclust = "complete", print = FALSE)
+plotDG(data, methodDist = "euclidean", methodHclust = "complete")
 }
 \arguments{
 \item{data}{microarray data. Only for \code{RGlist}, \code{MAlist} or \code{ELits} class objects.}
-
-\item{cyanine}{only for RGList data class.}
-
-\item{centers}{either the number of clusters, say \emph{k}, or a set initial (distinct)
-cluster centers. If a number, a random set of (distinct) rows in x is chosen as initial centres.
-See \code{\link{kmeans}}. Default: \code{2}.}
-
-\item{methodDist}{method for Distance Matrix Computation. See \code{\link{dist}}. Default: {"euclidean"}.}
-
-\item{methodHclust}{method for hierarchical cluster analysis. See \code{\link{hclust}}. Default: {"complete"}.}
-
-\item{print}{print result K-Means clustering}
-
-\item{data}{microarray data. Only for \code{RGlist}, \code{MAlist} or \code{ELits} class objects.}
-
-\item{cyanine}{only for RGList data class.}
 
 \item{methodDist}{method for Distance Matrix Computation. See \code{\link{dist}}. Default: {"euclidean"}.}
 
@@ -35,7 +15,5 @@ See \code{\link{kmeans}}. Default: \code{2}.}
 }
 \description{
 Clustering tree by Hierarchical clustering algorithm.
-
-Clustering MDS by K-Means clustering algorithm.
 }
 
