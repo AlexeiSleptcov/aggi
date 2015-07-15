@@ -1,0 +1,11 @@
+Package: aggi
+Type: Package
+Title: Agilent arrays analisys (aggy)
+Version: 0.91.0
+Date: 2015-07-14
+Author: Aleksei Sleptsov
+Maintainer: Aleksei Sleptsov <alexei.sleptcov@medgenetics.ru>
+Description: Methods for Agilent Arrays
+Depends: R (>= 3.2.0)
+License: GPL-2
+LazyData: TRUE
