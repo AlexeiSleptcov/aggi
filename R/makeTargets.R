@@ -22,5 +22,5 @@ makeTargets <- function(path = getwd(),
   if(length(files) != length(manames))
     stop("Length files and manames are different", call. = FALSE)
   
-  data.frame(Name = manames, FileName = files, stringsAsFactors = FALSE)
+  data.frame(names = manames, filenames = files, stringsAsFactors = FALSE)
 }
