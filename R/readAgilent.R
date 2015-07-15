@@ -15,7 +15,7 @@
 #'
 #' @examples 
 #' # targets <- read.table("targets.txt", header = TRUE, stringsAsFactors = FALSE)
-#' # MyArrays = readAgilent(targets, collect = "median")
+#' # MyArrays <- readAgilent(targets, collect = "median")
 #'
 #' @export
 
