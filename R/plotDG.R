@@ -55,12 +55,12 @@ plotDG <- function(data,
                    methodHclust = "complete",
                    print = FALSE){
   
-  if(inherits(data,"RGlist")){
+  if(inherits(data,"RGList")){
     cyanine = match.arg(cyanine)
     dannye = data[[cyanine]]
-  } else if(inherits(data,"MAlist")) {
+  } else if(inherits(data,"MAList")) {
     dannye = data$M
-  } else if(inherits(data,"Elist")) {
+  } else if(inherits(data,"EList")) {
     dannye = data$E
   } else {
     stop("Data must RGList, MAList or EList class object")
