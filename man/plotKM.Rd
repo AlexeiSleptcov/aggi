@@ -4,7 +4,7 @@
 \alias{plotKM}
 \title{Plot clustering MDS for Agilent microarray data}
 \usage{
-plotKM(data, centers = 2, methodDist = "euclidean", print = FALSE)
+plotKM(data, centers = 2, methodDist = "euclidean", print = FALSE, ...)
 }
 \arguments{
 \item{data}{microarray data. Only for \code{RGlist}, \code{MAlist} or \code{ELits} class objects.}

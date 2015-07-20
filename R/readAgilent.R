@@ -9,12 +9,14 @@
 #' @param collect what the data signals you want to process? Default: \code{"processed"}.
 #'
 #' @return Read Feature Extraction's files.
-#' @return Collecting data from the format \code{"compact"} can be taken on the processed signals
+#' @details Collecting data from the format \code{"compact"} can be taken on the processed signals
 #' (\code{"processed"}), raw data (\code{"mean"} or \code{"median"}) or LogRatio (\code{"LogRatio"}).
 #' At the same time, if format selected as \code{"full"} you may collect normalized data (\code{"DyeNorm"}).
-#' @return Targets object must be class \code{data.frame}, and have two required column \code{name} 
+#' @details Targets object must be class \code{data.frame}, and have two required column \code{name} 
 #' (eg.: "array1", "array2") and \code{filenames} (eg. "2802860_12158125.txt").
-#' 
+#'  
+#' @seealso \code{\link{readGenePix}}  
+#'  
 #' @examples 
 #' # targets <- read.table("targets.txt", header = TRUE, stringsAsFactors = FALSE)
 #' # MyArrays <- readAgilent(targets, collect = "median")
@@ -117,6 +119,6 @@ readAgilent <- function(targets = NULL,
                             other.columns=other.columns,
                             annotation = c("Row", "Col", "Sequence", "ControlType",
                                            "ProbeName", "GeneName", "SystematicName",
-                                           "identifier", "SubTypeMask"))
+                                           "identifier", "SubTypeMask", "Description"))
   read.data
 }

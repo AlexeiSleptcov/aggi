@@ -1,9 +1,10 @@
 #' Make targets object
 #' 
-#' Create targets object based on TXT files localized in filepath.
+#' Create targets object based on files localized in filepath.
 #' 
-#' @param path filepath, where content only your TXT FE-files. Default: \code{getwd()}
+#' @param path filepath, where content only your files. Default: \code{getwd()}
 #' @param manames names for your arrays. If argument is \code{NULL} (default) names will
+#' @param fileformat Default \code{"*.txt"}
 #' be assigned a serial number, for instance: MA1, MA2 etc.
 #' 
 #' @examples # mytargets <- makeTargets()
@@ -11,9 +12,10 @@
 #' @export
 
 makeTargets <- function(path = getwd(), 
-                        manames = NULL){
+                        manames = NULL,
+                        fileformat = "*.txt"){
   
-  files = list.files(path, "*.txt")
+  files = list.files(path, fileformat)
   
   if(is.null(manames)){
     manames = paste("MA", 1:length(files), sep = "")

@@ -21,19 +21,20 @@ readAgilent(targets = NULL, path = getwd(), format = c("compact", "full"),
 }
 \value{
 Read Feature Extraction's files.
-
-Collecting data from the format \code{"compact"} can be taken on the processed signals
-(\code{"processed"}), raw data (\code{"mean"} or \code{"median"}) or LogRatio (\code{"LogRatio"}).
-At the same time, if format selected as \code{"full"} you may collect normalized data (\code{"DyeNorm"}).
-
-Targets object must be class \code{data.frame}, and have two required column \code{name}
-(eg.: "array1", "array2") and \code{filenames} (eg. "2802860_12158125.txt").
 }
 \description{
 Read Feature Extraction's txt files.
 }
+\details{
+Collecting data from the format \code{"compact"} can be taken on the processed signals
+(\code{"processed"}), raw data (\code{"mean"} or \code{"median"}) or LogRatio (\code{"LogRatio"}).
+At the same time, if format selected as \code{"full"} you may collect normalized data (\code{"DyeNorm"}).
+}
 \examples{
 # targets <- read.table("targets.txt", header = TRUE, stringsAsFactors = FALSE)
 # MyArrays <- readAgilent(targets, collect = "median")
+}
+\seealso{
+\code{\link{readGenePix}}
 }
 

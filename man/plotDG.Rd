@@ -4,7 +4,7 @@
 \alias{plotDG}
 \title{Plot dendrogramm for Agilent microarray data}
 \usage{
-plotDG(data, methodDist = "euclidean", methodHclust = "complete")
+plotDG(data, methodDist = "euclidean", methodHclust = "complete", ...)
 }
 \arguments{
 \item{data}{microarray data. Only for \code{RGlist}, \code{MAlist} or \code{ELits} class objects.}

@@ -15,7 +15,8 @@
 plotKM <- function(data, 
                    centers = 2,
                    methodDist = "euclidean",
-                   print = FALSE){
+                   print = FALSE,
+                   ...){
   
   if(inherits(data,"RGList")){
     dannye = na.omit( suppressWarnings(log10(data$R/data$G)) )
@@ -29,7 +30,7 @@ plotKM <- function(data,
   
   MDS.data = cmdscale( dist( t(dannye), method = methodDist));
   km = kmeans(MDS.data, centers, nstart=1000)
-  plot(MDS.data, type="n", xlab = "Dimension 1", ylab = "Dimension 2")
+  plot(MDS.data, type="n", xlab = "Dimension 1", ylab = "Dimension 2", ...)
   text(MDS.data, rownames(MDS.data), col = km$cluster)
   points(km$centers, col = 1:centers, pch = 8)
   

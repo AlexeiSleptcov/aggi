@@ -4,16 +4,18 @@
 \alias{makeTargets}
 \title{Make targets object}
 \usage{
-makeTargets(path = getwd(), manames = NULL)
+makeTargets(path = getwd(), manames = NULL, fileformat = "*.txt")
 }
 \arguments{
-\item{path}{filepath, where content only your TXT FE-files. Default: \code{getwd()}}
+\item{path}{filepath, where content only your files. Default: \code{getwd()}}
 
-\item{manames}{names for your arrays. If argument is \code{NULL} (default) names will
+\item{manames}{names for your arrays. If argument is \code{NULL} (default) names will}
+
+\item{fileformat}{Default \code{"*.txt"}
 be assigned a serial number, for instance: MA1, MA2 etc.}
 }
 \description{
-Create targets object based on TXT files localized in filepath.
+Create targets object based on files localized in filepath.
 }
 \examples{
 # mytargets <- makeTargets()

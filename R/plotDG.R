@@ -10,7 +10,8 @@
 
 plotDG <- function(data, 
                    methodDist = "euclidean",
-                   methodHclust = "complete"){
+                   methodHclust = "complete",
+                   ...){
   
   if(inherits(data,"RGList")){
     dannye = na.omit( suppressWarnings(log10(data$R/data$G)) )
@@ -22,7 +23,6 @@ plotDG <- function(data,
     stop("Data must RGList, MAList or EList class object")
   }
   
-  if(require("limma"))
-    plot(hclust( dist( t(dannye), method = methodDist), method = methodHclust), hang=-1,  xlab = methodDist)
+  plot(hclust( dist( t(dannye), method = methodDist), method = methodHclust), hang=-1,  xlab = methodDist, ...)
 }
 
