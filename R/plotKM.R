@@ -22,7 +22,7 @@ plotKM <- function(data,
     dannye = na.omit( suppressWarnings(log10(data$R/data$G)) )
   } else if(inherits(data,"MAList")) {
     dannye = data$M
-  } else if(inherits(data,"EList")) {
+  } else if(inherits(data,c("EList", "EListRaw"))) {
     dannye = data$E
   } else {
     stop("Data must RGList, MAList or EList class object")
