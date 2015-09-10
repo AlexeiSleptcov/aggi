@@ -25,9 +25,10 @@
 
 readAgilent <- function(targets = NULL,
                         path = getwd(),
-                        format = c("compact", "full"),
-                        macolors = 2,
-                        collect = c("processed", "median", "mean", "LogRatio", "DyeNorm")
+                        format = c("C", "F"),
+                        dyes = 2,
+                        collect = c("proc", "median", "mean", "lr", "dn"),
+                        verbose = 0
                         ){
   # check paramethers
   if(is.null(targets))
@@ -36,16 +37,16 @@ readAgilent <- function(targets = NULL,
   collect = match.arg(collect)
   format = match.arg(format)
 
-  if(format == "compact" & collect == "DyeNorm")
+  if(format == "C" & collect == "dn")
     stop("Argument DyeNorm only in full format" , call. = FALSE)
 
-  if(macolors == 1){
+  if(dyes == 1){
     if(collect == "LogRatio")
       stop("Argument LogRatio only in two-color microarray" , call. = FALSE)
 
     columns = c(E="gMedianSignal", Emean="gMeanSignal")
     switch(collect,
-           "processed" = {
+           "proc" = {
              columns = list(E="gProcessedSignal")
            },
            "median" = {
@@ -54,14 +55,14 @@ readAgilent <- function(targets = NULL,
            "mean" = {
              columns = list(E="gMeanSignal", Emean="gMedianSignal")
            },
-           "DyeNorm" = {
+           "dn" = {
              columns = list(E="gDyeNormSignal")
            })
     other.columns = list(gIsFeatPopnOL="gIsFeatPopnOL",
                          gIsSaturated="gIsSaturated",
                          gIsFeatNonUnifOL="gIsFeatNonUnifOL")
 
-  } else if( macolors == 2) {
+  } else if( dyes == 2) {
     # constituitive paramethers
     other = list(flag = "flag",
                  annotation = "annotation",
@@ -83,12 +84,12 @@ readAgilent <- function(targets = NULL,
     # WellAboveBG = signal exceeds more significantly background
 
     switch(collect,
-           "DyeNorm" = {
+           "dn" = {
              columns = list(R="rDyeNormSignal",G="gDyeNormSignal")
              other.columns = c(other, "rMeanSignal", "gMeanSignal",
                                "rMedianSignal", "gMedianSignal")
            },
-           "ProcessedSignal" = {
+           "proc" = {
              columns = list(R="rProcessedSignal",G="gProcessedSignal",
                             Rb = "rProcessedBackground", Gb = "gProcessedBackground")
              other.columns = c(other, "rMeanSignal", "gMeanSignal",
@@ -104,7 +105,7 @@ readAgilent <- function(targets = NULL,
                             Rb = "rBGMeanSignal", Gb = "gBGMeanSignal")
              other.columns = c(other, "rMedianSignal", "gMedianSignal")
            },
-           "LogRatio" = {
+           "lr" = {
              logs = list(LR="LogRatio",LRE="LogRatioError")
              other.columns = c(logs, other)
              columns = NULL
@@ -119,6 +120,7 @@ readAgilent <- function(targets = NULL,
                             other.columns=other.columns,
                             annotation = c("Row", "Col", "Sequence", "ControlType",
                                            "ProbeName", "GeneName", "SystematicName",
-                                           "identifier", "SubTypeMask", "Description"))
+                                           "identifier", "SubTypeMask", "Description"),
+                            verbose = verbose)
   read.data
 }

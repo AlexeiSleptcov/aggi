@@ -4,9 +4,9 @@
 \alias{readAgilent}
 \title{Read agilent files}
 \usage{
-readAgilent(targets = NULL, path = getwd(), format = c("compact", "full"),
-  macolors = 2, collect = c("processed", "median", "mean", "LogRatio",
-  "DyeNorm"))
+readAgilent(targets = NULL, path = getwd(), format = c("C", "F"),
+  dyes = 2, collect = c("proc", "median", "mean", "lr", "dn"),
+  verbose = 0)
 }
 \arguments{
 \item{targets}{Feature Extraction's files. TXT format files only.}
@@ -15,9 +15,9 @@ readAgilent(targets = NULL, path = getwd(), format = c("compact", "full"),
 
 \item{format}{which format your FE-files have? Default: \code{"compact"}}
 
-\item{macolors}{read two-color (2) or one-color (1) microarray.}
-
 \item{collect}{what the data signals you want to process? Default: \code{"processed"}.}
+
+\item{macolors}{read two-color (2) or one-color (1) microarray.}
 }
 \value{
 Read Feature Extraction's files.

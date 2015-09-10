@@ -1,11 +1,14 @@
 Package: aggi
 Type: Package
 Title: Agilent arrays analisys (aggy)
-Version: 0.91.0
+Version: 0.95.0
 Date: 2015-07-14
 Author: Aleksei Sleptsov
 Maintainer: Aleksei Sleptsov <alexei.sleptcov@medgenetics.ru>
 Description: Methods for Agilent Arrays
-Depends: R (>= 3.1.2), limma, ggplot2
+Depends: R (>= 3.1.2), stats, limma, ggplot2, ggdendro, reshape2, RColorBrewer, gridExtra
+Imports: methods, MASS
 License: GPL-2
-LazyData: TRUE
+LazyData: no
+
+
