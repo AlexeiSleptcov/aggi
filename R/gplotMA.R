@@ -50,14 +50,19 @@ gplotMA <- function(data,
     probes[M > summary(M)[4]] = "high"
     probes = factor(probes, levels = c("high", "medium", "low"))
   } else {
-    if(is.null(probe))
+    if(is.null(probe)) {
       probes = data$genes[[columnProbe]]
-    else {
+      data = na.omit(data.frame(M, A, probes, stringsAsFactors = FALSE))
+    } else {
       probes = data$genes[ which(data$genes[[columnProbe]] == probe) , columnProbe ]
+      data = na.omit(data.frame(M[which(data$genes[[columnProbe]] == probe)], 
+                                A[which(data$genes[[columnProbe]] == probe)], 
+                                probes, 
+                                stringsAsFactors = FALSE))
     }
   }
   
-  data = na.omit(data.frame(M, A, probes, stringsAsFactors = FALSE))
+  
   # ggplot
   ggplot(data,  aes(A, M)) +
     geom_point(aes(colour = factor(probes) ), alpha = alpha, size = size) +

@@ -45,28 +45,30 @@ fixArrays <- function(data){
      for(smp in 1:ncol(data)){
        
        dneg = data
-       adata = makeArrays(data)
+       nslope = c()
+       slope = c()
        
        for(cyan in c("R", "G")){
+         adata = makeArrays(data)
          if(cyan == "R"){
-           neg = x = adata$Arrays[,,smp, 1]
+           neg = adata$Arrays[,,smp, 1]
          } else {
-           neg = x = adata$Arrays[,,smp, 2]
+           neg = adata$Arrays[,,smp, 2]
          }
          dneg[[cyan]][data$genes$ControlType != -1,] = NA
-         neg[data$ControlType != -1] = NA
+         neg[adata$ControlType != -1] = NA
          
          # smoothing NegativesE
          
          sneg = makeSmall(neg)
          
-         dneg[[cyan]][which(data$genes$Row == 1 & data$genes$Col == 1)] <- 
+         dneg[[cyan]][which(data$genes$Row == 1 & data$genes$Col == 1), smp] <- 
            median(sneg[1:5,1:5], na.rm = TRUE) # upRow leftCol
-         dneg[[cyan]][which(data$genes$Row == 1 & data$genes$Col == max(data$genes$Col))] <- 
+         dneg[[cyan]][which(data$genes$Row == 1 & data$genes$Col == max(data$genes$Col)), smp] <- 
            median(sneg[(dim(sneg)[1]-5):dim(sneg)[1],1:5], na.rm = TRUE) # upRow rightCol
-         dneg[[cyan]][which(data$genes$Row == max(data$genes$Row) & data$genes$Col == max(data$genes$Col))] <- 
+         dneg[[cyan]][which(data$genes$Row == max(data$genes$Row) & data$genes$Col == max(data$genes$Col)), smp] <- 
            median(sneg[(dim(sneg)[1]-5):dim(sneg)[1],(dim(sneg)[2]-5):dim(sneg)[2]], na.rm = TRUE) # downRow rightCol
-         dneg[[cyan]][which(data$genes$Row == max(data$genes$Row) & data$genes$Col == 1)] <- 
+         dneg[[cyan]][which(data$genes$Row == max(data$genes$Row) & data$genes$Col == 1), smp] <- 
            median(sneg[1:5,(dim(sneg)[2]-5):dim(sneg)[2]], na.rm = TRUE) # downRow leftCol
          
          
@@ -74,11 +76,51 @@ fixArrays <- function(data){
                             stringsAsFactors = FALSE)
          model = loess(Int ~ Row * Col, 
                        degree = 1, span = 1, family = "symmetric", data = moddf)
-         moddf$Fit = predict(model, moddf[,-1])
+         nslope[[cyan]] = predict(model, moddf[,-1])
          
-         data[[cyan]][,smp] = data[[cyan]][,smp] - moddf$Fit
          
-         # smoothing Regular
+         # positives
+         #' 0 = CGHBright
+         #' 66 = DarkCorner Negatives
+         #' 1028 = SM_ Negatives
+         #' SRN_
+#          a = data[grep("SRN_", data$genes$SystematicName),]
+#          
+#          if(cyan == "R"){
+#            x = a$R[,smp]
+#          } else {
+#            x = a$G[,smp]
+#          }
+#          
+# #          sxm = data.frame(Row = data$genes$Row[data$genes$SubTypeMask == 0],
+# #                           Col = data$genes$Col[data$genes$SubTypeMask == 0], 
+# #                           Int = log2(x), stringsAsFactors = FALSE) 
+#  
+#          sxm = data.frame(Row = a$genes$Row,
+#                           Col = a$genes$Col, 
+#                           Int = x, stringsAsFactors = FALSE) 
+#          sxm = rbind(sxm,
+#            c(1,1,median(x, na.rm = TRUE)),
+#            c(1,max(data$genes$Col),median(x, na.rm = TRUE)),
+#            c(max(data$genes$Row),1,median(x, na.rm = TRUE)),
+#            c(max(data$genes$Row),max(data$genes$Col),median(x, na.rm = TRUE))
+#          )  
+#          
+#          optmodel = loess(Int ~ Row * Col, 
+#                           degree = 1, span = 0.1, family = "symmetric", data = sxm)
+#          optSpan <- optimal.span(optmodel, criterion = "gcv")$span
+#          model = loess(Int ~ Row * Col, 
+#                        degree = 1, span = optSpan, family = "symmetric", data = sxm)
+#          
+#          slope[[cyan]] = predict(model, data.frame(Row = data$genes$Row, Col = data$genes$Col))
+         
+#          # smoothing Regular
+         adata2 = makeArrays(data[data$genes$ControlType == 0,])
+         if(cyan == "R"){
+           x = adata2$Arrays[,,smp, 1]
+         } else {
+           x = adata2$Arrays[,,smp, 2]
+         }
          sx = makeSmall(x)
          sxm = na.omit(melt(sx)[,-4])
          names(sxm) = c("Row", "Col", "Int")
@@ -93,9 +135,15 @@ fixArrays <- function(data){
          model = loess(Int ~ Row * Col, 
                        degree = 1, span = optSpan, family = "symmetric", data = sxm)
          
-         slope = predict(model, data.frame(Row = data$genes$Row, Col = data$genes$Col))
+         slope[[cyan]] = predict(model, data.frame(Row = data$genes$Row, Col = data$genes$Col))
          
-         d = data[[cyan]][,smp]*(median(slope, na.rm = TRUE)/slope)
+       } # neg & regular
+       
+       nsl = apply(cbind(nslope$R, nslope$G), 1, mean, na.rm=TRUE)
+       sl = apply(cbind(slope$R, slope$G), 1, mean, na.rm=TRUE)
+       for(cyan in c("R", "G")){
+         data[[cyan]][,smp] = data[[cyan]][,smp] + (nsl - nslope[[cyan]])
+         d = data[[cyan]][,smp]*(median(sl, na.rm = TRUE)/sl)
          data[[cyan]][,smp] = d - summary(d)[1] + 25 
        }
      }

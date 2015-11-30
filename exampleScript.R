@@ -63,33 +63,50 @@ gplotArray(E2, 3)
 
 #' @_spatial_correction
 
-gplotRC(RG,4)
+gplotRC(RG)
 gplotRC(E)
 
 RGf = fixArrays(RG)
-RGf = fixArrays(RGf)
 Ef = fixArrays(E)
 
-gplotRC(RGf,4)
+gplotRC(RG,1)
 gplotRC(Ef)
 
 ################################
+CNVnorm = MA.RG(RGf)
+RGf2 = noiseReductionCGH(RGf)
+boxplot(log(RGf2$R), col="red")
+boxplot(log(RGf2$G), add=T, col="green")
 
-CNVnorm = normalizeWithinArrays(RGf, method = "loess", iterations = 20, bc.method = "none")
+CNVnorm = normalizeWithinArrays(RGf2, method = "loess", bc.method = "none")
 CNVnorm2 = normalizeBetweenArrays(CNVnorm)
 
+boxplot(MA.RG(RG)$M)
+boxplot(MA.RG(RGf2)$M, add=T, col=2)
+boxplot(CNVnorm$M, add=T, col=3)
+
 gplotMA(RG,1)
-gplotMA(RGf,2)
-gplotMA(CNVnorm,2)
-gplotMA(CNVnorm2,2)
+gplotMA(RGf,1)
+gplotMA(RGf2,1)
+
+##
+RGc = RGf[RG$genes$ControlType == 1,]
+gplotMA(RGc,1)
+##
+
+gplotMA(CNVnorm,1)
+gplotMA(CNVnorm2,1)
+ma.plot(na.omit(cbind(CNVnorm$A[,smp], CNVnorm$M[,smp]))[,1],
+        na.omit(cbind(CNVnorm$A[,smp], CNVnorm$M[,smp]))[,2],plot.method = "smoothScatter")
+
 
 gplotDensities(MA.RG(RG))
 gplotDensities(MA.RG(RGf))
 gplotDensities(CNVnorm)
 gplotDensities(CNVnorm2)
 
-gplotRC(CNVnorm,4)
-gplotRC(CNVnorm2,4)
+gplotRC(RG.MA(CNVnorm),1)
+gplotRC(RG.MA(CNVnorm2),1)
 
 Enorm = nec(Ef, status = Ef$genes$ControlType, negctrl="-1",  regular="0",  offset=1, robust=TRUE)
 Enorm2 = normalizeBetweenArrays(Enorm, method="quantile")
@@ -101,5 +118,59 @@ gplotDensities(Enorm2)
 
 gplotRC(Enorm,4)
 gplotRC(Enorm2,4)
+
+
+####### array CGH
+
+DLRSpread(CNVnorm)
+cna = runCBS(CNVnorm, cluster = 2)
+cnas = thrCBS(cna, n=0.5)
+statCNA(cnas)
+csd = commonSeg(cnas, cna, biomart = TRUE)
+data.frame(apply(csd[1:10,], 2, strtrim, 8))
+# write.table(CSD, file = "CSD.txt", quote = F, sep = "\t", na = "", row.names = F)
+
+######## plots CGH
+
+setwd("D:/Sources/Skryabin/genomes")
+ggenomeplot(cna, smp = 1, span = 0.3)
+
+
+######## CGh call (work with tumor cells)
+
+CGHc = convertCGHcall(CNVnorm)
+head(CGHc);tail(CGHc)
+library(CGHcall)
+# average log2 transformation in duplicate probe
+# find colnames that not need averaging process
+# col.not.need <- colnames(CGHc)[!grepl('kap_7',colnames(CGHc))]
+#convert data.frame to data.table
+#library(data.table)
+#tmp.callRaw = as.data.table(CGHc)
+#averaging
+# ave.callRaw = tmp.callRaw[,list('kap_7'= median(kap_7)),col.not.need]
+# ave.callRaw = tmp.callRaw[,lapply(.SD,median),col.not.need] 
+
+callRaw.maked <- make_cghRaw(CGHc)
+call.cghdata <- preprocess(callRaw.maked, maxmiss=30, nchrom=22)
+call.norm.cghdata <- normalize(call.cghdata, method="median", smoothOutliers=TRUE)
+seg.calldata <- segmentData(call.norm.cghdata, method="DNAcopy",
+                            undo.splits="sdundo",undo.SD=3,clen=10, relSDlong=5)
+
+postseg.calldata <- postsegnormalize(seg.calldata)
+
+cellularity = c(1, 1) #threshold
+result.calling <- CGHcall(postseg.calldata,nclass=3,cellularity=cellularity)
+# convert to a call object
+result.calling <- ExpandCGHcall(result.calling,postseg.calldata)
+
+#images
+plot(result.calling[,1])
+plot(result.calling[,2])
+plot(result.calling[,3])
+plot(result.calling[,4])
+summaryPlot(result.calling)
+frequencyPlotCalls(result.calling)
+
 
 

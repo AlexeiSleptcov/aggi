@@ -6,9 +6,22 @@ Date: 2015-07-14
 Author: Aleksei Sleptsov
 Maintainer: Aleksei Sleptsov <alexei.sleptcov@medgenetics.ru>
 Description: Methods for Agilent Arrays
-Depends: R (>= 3.1.2), stats, limma, ggplot2, ggdendro, reshape2, RColorBrewer, gridExtra
-Imports: methods, MASS
+Depends:
+    R (>= 3.1.2),
+    stats,
+    limma,
+    ggplot2,
+    ggdendro,
+    reshape2,
+    RColorBrewer,
+    gridExtra,
+    doParallel,
+    BSgenome.Hsapiens.UCSC.hg19,
+    biomaRt,
+    DNAcopy
+Imports:
+    methods,
+    MASS
 License: GPL-2
 LazyData: no
-
-
+RoxygenNote: 5.0.0
