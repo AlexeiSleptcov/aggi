@@ -4,7 +4,7 @@
 \alias{noiseReductionCGH}
 \title{Noise reduction for aCGH}
 \usage{
-noiseReductionCGH(data, N = 200, method = c("mad", "iqr"))
+noiseReductionCGH(data, N = NULL, method = c("mad", "iqr"))
 }
 \arguments{
 \item{data}{RGList only}
