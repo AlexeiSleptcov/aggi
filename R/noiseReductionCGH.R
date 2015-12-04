@@ -9,8 +9,13 @@
 #' @export
 
 noiseReductionCGH <- function(data, N = 200, method = c("mad", "iqr")){
-  if(!inherits(data, "RGList"))
+  if(!inherits(data, c("RGList", "list")))
     stop("First, data must be RGList", call. = FALSE)
+  if(inherits(data, "list")){
+    if(!(exists("R", where = data) && exists("G", where = data)))
+      stop("Data do not have R and G objects", call. = FALSE)
+  }
+  
   for(i in 1:ncol(data$R)){
     Rf2 = data$R[,i]
     Gf2 = data$G[,i]
