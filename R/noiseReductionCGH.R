@@ -33,15 +33,21 @@ noiseReductionCGH <- function(data, N = 200, method = c("mad", "iqr")){
     data$R[,i] = data$R[,i]-median(data$R[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
     data$G[,i] = data$G[,i]-median(data$G[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
     
-    
-    cmeanNeg = ((median(data$R[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)+median(data$G[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)))/2
-    cmean = ((median(data$R[,i], na.rm = TRUE)+median(data$G[,i], na.rm = TRUE)))/2
-    
-    Rz = data$R[,i]-cmeanNeg
-    Gz = data$G[,i]-cmeanNeg
-    
-    data$R[,i] = (data$R[,i]*(cmean/median(data$R[,i], na.rm = TRUE)))+cmeanNeg
-    data$G[,i] = (data$G[,i]*(cmean/median(data$G[,i], na.rm = TRUE)))+cmeanNeg
+    if(inherits(data, "list")){
+      cmean = ((median(data$R[,i], na.rm = TRUE)+median(data$G[,i], na.rm = TRUE)))/2
+      
+      data$R[,i] = data$R[,i]*(cmean/median(data$R[,i], na.rm = TRUE))
+      data$G[,i] = data$G[,i]*(cmean/median(data$G[,i], na.rm = TRUE))
+    } else {
+      cmeanNeg = ((median(data$R[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)+median(data$G[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)))/2
+      cmean = ((median(data$R[,i], na.rm = TRUE)+median(data$G[,i], na.rm = TRUE)))/2
+      
+      Rz = data$R[,i]-cmeanNeg
+      Gz = data$G[,i]-cmeanNeg
+      
+      data$R[,i] = (data$R[,i]*(cmean/median(data$R[,i], na.rm = TRUE)))+cmeanNeg
+      data$G[,i] = (data$G[,i]*(cmean/median(data$G[,i], na.rm = TRUE)))+cmeanNeg
+    }
   }
   data
 }
