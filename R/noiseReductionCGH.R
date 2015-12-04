@@ -30,8 +30,10 @@ noiseReductionCGH <- function(data, N = 200, method = c("mad", "iqr")){
     }
     data$R[,i] = ( ( (Rf2-Rm)*(N/Rmad) )+Rm )
     data$G[,i] = ( ( (Gf2-Gm)*(N/Gmad) )+Gm )
-    data$R[,i] = data$R[,i]-median(data$R[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
-    data$G[,i] = data$G[,i]-median(data$G[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
+    if(inherits(data, "RGlist")){
+      data$R[,i] = data$R[,i]-median(data$R[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
+      data$G[,i] = data$G[,i]-median(data$G[data$genes$SubTypeMask == 1028,i], na.rm = TRUE)
+    }
     
     if(inherits(data, "list")){
       cmean = ((median(data$R[,i], na.rm = TRUE)+median(data$G[,i], na.rm = TRUE)))/2
