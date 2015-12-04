@@ -30,6 +30,10 @@ noiseReductionCGH <- function(data, N = NULL, method = c("mad", "iqr")){
     }
     if(is.null(N))
       N = mean(c(Rmad, Gmad))
+    
+    # AFFINE TRANSFORMATION
+    # SUBTRACT MEDIAN BEFORE & ADD AFTER
+    # FITTING MAD TO COMMON MAD
     data$R[,i] = ( ( (Rf2-Rm)*(N/Rmad) )+Rm )
     data$G[,i] = ( ( (Gf2-Gm)*(N/Gmad) )+Gm )
     
@@ -39,6 +43,8 @@ noiseReductionCGH <- function(data, N = NULL, method = c("mad", "iqr")){
 #     }
     
     # if(inherits(data, "list")){
+    
+    # FIT COMMON MEDIAN
       cmean = ((median(data$R[,i], na.rm = TRUE)+median(data$G[,i], na.rm = TRUE)))/2
       
       data$R[,i] = data$R[,i]*(cmean/median(data$R[,i], na.rm = TRUE))
